@@ -1,0 +1,111 @@
+Tarea 3 – Producto
+Introducción
+
+Imagina que estás desarrollando una aplicación de e-commerce y necesitas mostrar la información de un producto.
+Este ejercicio te ayudará a entender cómo manejar números y textos con signals, y cómo actualizar valores a través de botones.
+
+Practicarás cómo usar signals con valores numéricos (precio).
+
+Aprenderás a implementar botones que cambien de forma controlada el valor de una señal.
+
+Usarás un método para mostrar información combinada (Laptop - $2500).
+
+Objetivo: que el estudiante comprenda cómo manipular señales numéricas y textuales para representar un producto y simular acciones típicas de un sistema de ventas.
+
+Tarea 2 – Página de Producto
+Enunciado
+
+Ahora vamos a practicar con un producto de tienda:
+
+Crea el componente ProductPageComponent en:
+src/app/pages/product/product-page.component.ts
+y su HTML:
+product-page.component.html.
+
+Configura la ruta en app.routes.ts:
+
+{ path: 'product', component: ProductPageComponent }
+
+
+y navega en: http://localhost:4200/product.
+
+Crea dos signals iniciales:
+
+productName = 'Laptop'
+productPrice = 2500
+
+
+Crea un método getProductInfo() que devuelva:
+"Laptop - $2500".
+
+Implementa los botones:
+
+Cambiar producto: cambia a productName = 'Phone' y productPrice = 1200.
+
+Subir precio: cambia el precio a 3000.
+
+Reset: regresa a valores iniciales.
+
+Capitalizado: muestra el productName en mayúsculas.
+
+Solución
+HTML
+<!-- product-page.component.html -->
+<h1>{{ productName() }}</h1>
+
+<dl class="row">
+  <dt class="col-sm-3">Producto:</dt>
+  <dd class="col-sm-9">{{ productName() }}</dd>
+
+  <dt class="col-sm-3">Precio:</dt>
+  <dd class="col-sm-9">\${{ productPrice() }}</dd>
+
+  <dt class="col-sm-3">Info:</dt>
+  <dd class="col-sm-9">{{ getProductInfo() }}</dd>
+
+  <dt class="col-sm-3">Capitalizado:</dt>
+  <dd class="col-sm-9">{{ productName().toUpperCase() }}</dd>
+</dl>
+
+<button (click)="changeProduct()" class="btn btn-success mx-2">Cambiar producto</button>
+<button (click)="increasePrice()" class="btn btn-warning">Subir precio</button>
+<button (click)="resetProduct()" class="btn btn-secondary mx-2">Reset</button>
+
+TS
+import { Component, signal } from '@angular/core';
+
+@Component({
+  selector: 'app-product-page',
+  standalone: true,
+  templateUrl: './product-page.component.html',
+})
+export class ProductPageComponent {
+  productName = signal<string>('Laptop');
+  productPrice = signal<number>(2500);
+
+  getProductInfo(): string {
+    return `${this.productName()} - $${this.productPrice()}`;
+  }
+
+  changeProduct(): void {
+    this.productName.set('Phone');
+    this.productPrice.set(1200);
+  }
+
+  increasePrice(): void {
+    this.productPrice.set(3000);
+  }
+
+  resetProduct(): void {
+    this.productName.set('Laptop');
+    this.productPrice.set(2500);
+  }
+}
+
+Ruta
+import { ProductPageComponent } from './pages/product/product-page.component';
+
+export const routes: Routes = [
+  { path: 'product', component: ProductPageComponent },
+  // otras rutas...
+];
