@@ -24,6 +24,7 @@ hero-page.component.html
 <button class="btn btn-primary">Cambiar edad</button>
 
 <button (click)="resetForm()" class="btn btn-primary mx-2">Reset</button>
+_________________________________________________________________________________________________________________________________________________________________________
 tarea-01.md
 Tarea:
 Practicar lo aprendido hasta el momento
