@@ -1,0 +1,105 @@
+Tarea 2 – Villano
+Introducción
+
+En el mundo de los superhéroes, siempre hay villanos que se enfrentan a ellos.
+En este ejercicio crearás una página que muestra información de un villano, y podrás cambiar entre diferentes villanos con solo presionar un botón.
+
+Practicarás cómo usar signals para manejar cadenas de texto.
+
+Verás cómo resetear valores de manera reactiva.
+
+Aprenderás a transformar información sin necesidad de nuevas señales (ejemplo: mostrar el nombre en mayúsculas).
+
+Objetivo: que el estudiante aprenda a crear un componente con información dinámica y a manipular sus valores desde la vista.
+_____________________________________________________________________________________________________________________________________________________________________
+
+Tarea 1 – Página de Villano
+Enunciado
+
+Vamos a practicar lo mismo que con el héroe, pero ahora con un villano:
+
+Crea el componente VillainPageComponent en:
+src/app/pages/villain/villain-page.component.ts
+y su template en:
+villain-page.component.html.
+
+Configura la ruta en app.routes.ts:
+
+{ path: 'villain', component: VillainPageComponent }
+
+
+y navega en: http://localhost:4200/villain.
+
+Crea dos signals iniciales:
+
+villainName = 'Thanos'
+villainPower = 'Infinity Gauntlet'
+
+
+Crea un método getVillainInfo() que retorne:
+"Thanos - Infinity Gauntlet".
+
+Implementa los botones:
+
+Cambiar villano: cambia a villainName = 'Joker' y villainPower = 'Chaos'.
+
+Reset: regresa a valores iniciales.
+
+Capitalizado: muestra el villainName en mayúsculas sin crear otra señal.
+_________________________________________________________________________________________________________________________________________________________________
+Solución
+HTML
+<!-- villain-page.component.html -->
+<h1>{{ villainName() }}</h1>
+
+<dl class="row">
+  <dt class="col-sm-3">Nombre:</dt>
+  <dd class="col-sm-9">{{ villainName() }}</dd>
+
+  <dt class="col-sm-3">Poder:</dt>
+  <dd class="col-sm-9">{{ villainPower() }}</dd>
+
+  <dt class="col-sm-3">Info:</dt>
+  <dd class="col-sm-9">{{ getVillainInfo() }}</dd>
+
+  <dt class="col-sm-3">Capitalizado:</dt>
+  <dd class="col-sm-9">{{ villainName().toUpperCase() }}</dd>
+</dl>
+
+<button (click)="changeVillain()" class="btn btn-danger mx-2">Cambiar villano</button>
+<button (click)="resetVillain()" class="btn btn-secondary">Reset</button>
+______________________________________________________________
+TS
+import { Component, signal } from '@angular/core';
+
+@Component({
+  selector: 'app-villain-page',
+  standalone: true,
+  templateUrl: './villain-page.component.html',
+})
+export class VillainPageComponent {
+  villainName = signal<string>('Thanos');
+  villainPower = signal<string>('Infinity Gauntlet');
+
+  getVillainInfo(): string {
+    return `${this.villainName()} - ${this.villainPower()}`;
+  }
+
+  changeVillain(): void {
+    this.villainName.set('Joker');
+    this.villainPower.set('Chaos');
+  }
+
+  resetVillain(): void {
+    this.villainName.set('Thanos');
+    this.villainPower.set('Infinity Gauntlet');
+  }
+}
+_______________________________________________________________________________________________________
+Ruta
+import { VillainPageComponent } from './pages/villain/villain-page.component';
+
+export const routes: Routes = [
+  { path: 'villain', component: VillainPageComponent },
+  // otras rutas...
+];
