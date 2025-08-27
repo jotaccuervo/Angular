@@ -55,3 +55,91 @@ age = 45
 Implementar el método: chageAge, asignalor al evento click del botón respectivo.
 cambia la edad a 60
 Extra: Tratar de mostrar el nombre (name) capitalizado en mayúscula sin crear una nueva señal.
+___________________________________________________________________________________________________________________________________
+TS
+import { Component, computed, signal } from '@angular/core';
+import { UpperCasePipe } from '@angular/common';
+
+@Component({
+  templateUrl: './hero-page.component.html',
+  imports: [UpperCasePipe],
+})
+export class HeroPageComponent {
+[x: string]: any;
+  name = signal('Ironman');
+  age = signal(45);
+
+  heroDescription = computed(() => {
+    const description = `${this.name()} - ${this.age()}`;
+    return description;
+  });
+
+  capitalizedName = computed(() => this.name().toUpperCase());
+
+  changeHero() {
+    this.name.set('Spiderman');
+    this.age.set(22);
+  }
+
+  changeAge() {
+    this.age.set(60);
+  }
+
+  resetForm() {
+    this.name.set('Ironman');
+    this.age.set(45);
+  }
+}
+____________________________________________________________________________________________________________________
+
+html
+
+<h1>{{ name() }}</h1>
+<dl>
+  <td>Nombre:</td>
+  <dd>{{ name() }}</dd>
+
+  <td>Edad:</td>
+  <dd>{{ age() }}</dd>
+
+  <td>Método:</td>
+  <dd>{{ heroDescription() }}</dd>
+
+  <td>Capitalizado:</td>
+  <!-- <dd>{{ capitalizedName() }}</dd> -->
+  <dd>{{ name() | uppercase }}</dd>
+</dl>
+<button (click)="changeHero()" class="btn btn-primary mx-2">
+  Cambiar nombre
+</button>
+<button (click)="changeAge()" class="btn btn-primary">Cambiar edad</button>
+<button (click)="resetForm()" class="btn btn-primary mx-2">Reset</button>
+_______________________________________________________________________________________________________________________________
+route
+
+import { Routes } from '@angular/router';
+import { CounterComponent } from './pages/counter/counter.component';
+import { HeroPageComponent } from './pages/hero/hero-page.component';
+
+
+export const routes: Routes = [
+
+{
+  path: '',
+  component: CounterComponent
+
+},
+{
+    path: 'hero',
+    component: HeroPageComponent,
+  },
+
+
+
+
+];
+
+
+
+
+
